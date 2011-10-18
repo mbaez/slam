@@ -4,3 +4,4 @@ nbproject/*
 test/*
 *.xml
 *.mf
+*.class
