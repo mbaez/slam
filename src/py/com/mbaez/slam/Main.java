@@ -19,9 +19,9 @@ public class Main {
         // TODO code application logic here
         DAOImpl dao = new DAOImpl(Tabla.class);
         String []params = {"5", "6"};
-        //dao.get(params);
+        dao.get(params);
         dao.listAll();
-        dao.delete("5");
+        //dao.delete(params);
     }
 
 }

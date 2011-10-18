@@ -50,7 +50,16 @@ public class DAOImpl implements DAO {
      * @return un objeto que cumpla con la restriccion dada por la clave primaria
      */
     public Object get(Object[] id) {
-        this.filterBy((String[]) reader.getIdColumns().toArray(), id);
+        String [] columns = new String[id.length];
+        //Se obtienen las columnas que son parte de la clave
+        int index = 0;
+        for (Object c : reader.getIdColumns().toArray()){
+            //Los nombre de las columnas son cargados como string
+            columns[index] = (String)c;
+            index++;
+        }
+        //se filtran por las columnas que  son clave primaria
+        this.filterBy(columns, id);
         return null;
     }
 
