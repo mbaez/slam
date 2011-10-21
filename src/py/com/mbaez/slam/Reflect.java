@@ -13,6 +13,14 @@ import java.lang.reflect.Method;
  * @author Maximiliano Báez <mxbg.py@gmail.com>
  */
 public class Reflect {
+    
+    /**
+     *Constructor de la clase reflect
+     */
+    private Refelct(){
+    }
+
+
     /**
      *
      * Se obtien el nombre del atributo y se genera construye una cadena que

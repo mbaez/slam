@@ -145,7 +145,8 @@ public class DAOImpl implements DAO {
             query += " = ?";
 
             index++;
-
+	    //si el indice apunta es igual a la cantidad de
+	    //columnas no se debe añadir el AND
             if (index < reader.getIdColumns().size()) {
                 query += " AND ";
             }

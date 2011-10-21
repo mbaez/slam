@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
 import py.com.mbaez.slam.annotation.*;
+import py.com.mbaez.slam.annotation.Column;
+import py.com.mbaez.slam.annotation.Id;
+import py.com.mbaez.slam.annotation.Table;
 
 /**
  *
