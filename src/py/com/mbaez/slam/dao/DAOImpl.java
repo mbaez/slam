@@ -1,27 +1,41 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
  */
+
 package py.com.mbaez.slam.dao;
 
 import java.util.List;
 import py.com.mbaez.slam.Reader;
 
 /**
- *
- * @author mbaez
+ * @author Maximiliano Báez <mxbg.py@gmail.com>
+ * @version 1.0 17/10/2011
  */
 public class DAOImpl implements DAO {
 
     private Class clazz;
+    private QueryGenerator generator;
     private Reader reader;
     /**
      * Constructor de la clase DAOImpl
      * @param clazz 
      */
-    public DAOImpl(Class clazz) {
+    public DAOImpl(Class<?> clazz) {
         this.clazz = clazz;
-        reader = new Reader(this.clazz);
+        generator = QueryGenerator(this.clazz);
     }
 
     /**
@@ -50,14 +64,6 @@ public class DAOImpl implements DAO {
      * @return un objeto que cumpla con la restriccion dada por la clave primaria
      */
     public Object get(Object[] id) {
-        String [] columns = new String[id.length];
-        //Se obtienen las columnas que son parte de la clave
-        int index = 0;
-        for (Object c : reader.getIdColumns().toArray()){
-            //Los nombre de las columnas son cargados como string
-            columns[index] = (String)c;
-            index++;
-        }
         //se filtran por las columnas que  son clave primaria
         this.filterBy(columns, id);
         return null;
@@ -69,9 +75,8 @@ public class DAOImpl implements DAO {
      *
      * @return lista de objetos
      */
-    public List listAll() {
-        String query = "SELECT * FROM ";
-        query += reader.getTableName();
+    public List<Object> listAll() {
+        String query = generator.selectQuery();
         System.out.println(query);
         return null;
     }
@@ -80,7 +85,7 @@ public class DAOImpl implements DAO {
      * Este método obtiene todas las filas de la tabla
      * que cumplan con la restricción del where dada por
      * las columnas column y sus respectivos valores value.
-     *
+     * <p>
      * SELECT * FROM Table WHERE column1 = value1 AND column2 = value2 ...
      *
      * @param column nombre de la coluna por la cual se desea filtrar.
@@ -88,22 +93,12 @@ public class DAOImpl implements DAO {
      * @return lista de objetos que cumplen con la restricción definida.
      */
     public List filterBy(String[] columns, Object[] values) {
-        String query = "SELECT * FROM ";
-        query += reader.getTableName();
-        query += " WHERE ";
-        int index = 0;
-
-        for (String column : columns) {
-            query += column;
-            query += " = " + values[index];
-
-            index++;
-
-            if (index < reader.getIdColumns().size()) {
-                query += " AND ";
-            }
+        if (columns.length != values.length){
+            throws new Exception("");
         }
+        String query = generator.selectQuery(colums);
         System.out.println(query);
+        //cursor = myDataBase.rawQuery(query, values);
         return null;
     }
 
@@ -117,15 +112,10 @@ public class DAOImpl implements DAO {
      * @param column nombre de la coluna por la cual se desea filtrar.
      * @param value valor para por el cual se desea filtrar.
      * @return lista de objetos que cumplen con la restricción definida.
+     * @see #filterBy(String[], Object[])
      */
     public List filterBy(String column, Object value) {
-        String query = "SELECT * FROM ";
-        query += reader.getTableName();
-        query += " WHERE ";
-        query += column;
-        query += " = " + value;
-        System.out.println(query);
-        return null;
+        return filterBy(new String[]{column}, new Object[]{value});
     }
 
     /**
@@ -136,21 +126,7 @@ public class DAOImpl implements DAO {
      * @param object el objeto a eliminar
      */
     public void delete(Object object) {
-        String query = "DELETE * FROM ";
-        query += reader.getTableName();
-        query += " WHERE ";
-        int index = 0;
-        for (String column : reader.getIdColumns()) {
-            query += column;
-            query += " = ?";
-
-            index++;
-	    //si el indice apunta es igual a la cantidad de
-	    //columnas no se debe añadir el AND
-            if (index < reader.getIdColumns().size()) {
-                query += " AND ";
-            }
-        }
+        String query = generator.deletQuery()
         System.out.println(query);
 
     }
