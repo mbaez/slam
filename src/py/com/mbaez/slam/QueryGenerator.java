@@ -41,7 +41,7 @@ public class QueryGenerator {
      * @see {@link Reader}
      */ 
     public QueryGenerator(Class clazz){
-        reader = new Reader(this.clazz);
+        reader = new Reader(clazz);
     }
     
     /**
@@ -55,7 +55,7 @@ public class QueryGenerator {
      * @see #deleteQuery(String[])
      */ 
     public String deletQuery(){
-        String [] columns = new String[getIdColumns().length];
+        String [] columns = new String[reader.getIdColumns().size()];
         //Se obtienen las columnas que son parte de la clave
         int index = 0;
         for (String column : reader.getIdColumns()){
@@ -87,7 +87,7 @@ public class QueryGenerator {
             index++;
             //si el indice apunta es igual a la cantidad de
             //columnas no se debe añadir el AND
-            if (index < columns.size()) {
+            if (index < columns.length) {
                 query += AND;
             }
         }
@@ -104,7 +104,7 @@ public class QueryGenerator {
      * @see {@link Reader#getIdColumns()}
      */ 
     public String selectFromPK(){
-        String [] columns = new String[getIdColumns().length];
+        String [] columns = new String[reader.getIdColumns().size()];
         //Se obtienen las columnas que son parte de la clave
         int index = 0;
         for (String column : reader.getIdColumns()){
@@ -127,7 +127,7 @@ public class QueryGenerator {
     public String selectQuery(){
         String query = SELECT;
         query += reader.getTableName();
-        System.out.println(query);
+        //System.out.println(query);
         return query;
     }
     
@@ -143,7 +143,7 @@ public class QueryGenerator {
      */ 
     public String selectQuery(String[] columns){
         String query = selectQuery();
-        query += WHERE
+        query += WHERE;
         int index = 0;
         for (String column : columns) {
             query += column;
