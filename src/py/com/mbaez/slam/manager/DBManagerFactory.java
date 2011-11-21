@@ -17,9 +17,11 @@
 
 package py.com.mbaez.slam.manager;
 
+import android.database.Cursor;
 import java.util.List;
 import py.com.mbaez.slam.QueryGenerator;
 import py.com.mbaez.slam.Reader;
+import py.com.mbaez.slam.Slam;
 
 /**
  *
@@ -45,7 +47,8 @@ public class DBManagerFactory <T extends Object> implements DBManager<T> {
      * @see DBManager#get(java.lang.Object)
      */
     public T get(Object id) {
-        this.filterBy(reader.getIdColumns().get(0), id);
+        Object [] params = new Object[]{id};
+        this.get(params);
         return null;
     }
 
@@ -56,6 +59,13 @@ public class DBManagerFactory <T extends Object> implements DBManager<T> {
         //se filtran por las columnas que  son clave primaria
         String query = generator.selectFromPK();
         System.out.println(query);
+        String params[]= new String[id.length];
+
+        //System.arraycopy(id, 0, params, 0, id.length);
+
+        //Cursor cursor = Slam.getDataBase().rawQuery(query, params);
+        //System.out.println(cursor);
+
         return null;
     }
 
@@ -65,6 +75,8 @@ public class DBManagerFactory <T extends Object> implements DBManager<T> {
     public List<T> listAll() {
         String query = generator.selectQuery();
         System.out.println(query);
+        //Cursor cursor = Slam.getDataBase().rawQuery(query,null);
+        //System.out.println(cursor);
         return null;
     }
 
@@ -77,7 +89,12 @@ public class DBManagerFactory <T extends Object> implements DBManager<T> {
         }
         String query = generator.selectQuery(columns);
         System.out.println(query);
-        //cursor = myDataBase.rawQuery(query, values);
+        String params[]= new String[values.length];
+
+        //System.arraycopy(values, 0, params, 0, values.length);
+        //Cursor cursor = Slam.getDataBase().rawQuery(query, params);
+        
+        //System.out.println(cursor);
         return null;
     }
 
@@ -114,12 +131,7 @@ public class DBManagerFactory <T extends Object> implements DBManager<T> {
     public <T> T merge(T entity) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    /**
-     * @see DBManager#flush()
-     */
-    public void flush() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
     /**
      * @see DBManager#refresh(java.lang.Object)
      */

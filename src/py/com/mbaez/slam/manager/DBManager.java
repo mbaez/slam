@@ -17,12 +17,14 @@
 package py.com.mbaez.slam.manager;
 
 import java.util.List;
+
 /**
  *
  * @author Maximiliano Báez <mxbg.py@gmail.com>
  * @param <T>
  */
-public interface DBManager <T extends Object> {
+public interface DBManager<T extends Object> {
+
     /**
      * Este método obtiene la fila de la tabla que cumple con la
      * restricción del where dada por la columna que es la clave primaria
@@ -34,6 +36,7 @@ public interface DBManager <T extends Object> {
      * @return un objeto que cumpla con la restriccion dada por la clave primaria
      */
     public T get(Object id);
+
     /**
      * Este método obtiene la fila de la tabla que cumple con la
      * restricción del where dada por las columnas que son forman parte de la
@@ -44,7 +47,8 @@ public interface DBManager <T extends Object> {
      * @param id valores de la clave primaria
      * @return un objeto que cumpla con la restriccion dada por la clave primaria
      */
-    public T get(Object [] id);
+    public T get(Object[] id);
+
     /**
      * Este método obtiene todas las filas de la tabla.
      * SELECT * FROM Table
@@ -52,7 +56,8 @@ public interface DBManager <T extends Object> {
      * @return lista de objetos
      */
     public List<T> listAll();
-        /**
+
+    /**
      * Este método obtiene todas las filas de la tabla
      * que cumplan con la restricción del where dada por
      * las columnas column y sus respectivos valores value.
@@ -63,7 +68,8 @@ public interface DBManager <T extends Object> {
      * @param value valor para por el cual se desea filtrar.
      * @return lista de objetos que cumplen con la restricción definida.
      */
-    public List<T> filterBy(String []columns, Object []values);
+    public List<T> filterBy(String[] columns, Object[] values);
+
     /**
      * Este método obtiene todas las filas de la tabla
      * que cumplan con la restricción del where dada por
@@ -77,6 +83,7 @@ public interface DBManager <T extends Object> {
      * @see #filterBy(String[], Object[])
      */
     public List<T> filterBy(String column, Object value);
+
     /**
      * Este método elimina el entity de la base de datos
      *
@@ -85,32 +92,28 @@ public interface DBManager <T extends Object> {
      * @param entity el objeto a eliminar
      */
     public void remove(T entity);
+
     /**
      * Saves (persists) an entity into the database, and also makes the
      * entity managed.
      */
     public void persist(T entity);
-    public void update(T entity);
 
+    public void update(T entity);
 
     /**
      * Merges an entity to the EntityManager’s persistence context and 
      * returns the merged entity.
-     */ 
+     */
     public <T> T merge(T entity);
 
     /**
-     * Synchronizes the state of entities in the EntityManager’s 
-     * persistence context with the database.
-     */ 
-    public void flush();
-    /**
      * Refreshes (resets) the entity from the database.
-     */ 
-   public void refresh(T entity);
+     */
+    public void refresh(T entity);
+
     /**
      * Closes an application-managed EntityManager.
-     */ 
+     */
     public void close();
-
 }
